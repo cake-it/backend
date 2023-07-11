@@ -1,4 +1,9 @@
 package cakeit.server.user.dto;
 
-public class dummy {
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Getter
+@NoArgsConstructor
+public class UserDto {
 }
