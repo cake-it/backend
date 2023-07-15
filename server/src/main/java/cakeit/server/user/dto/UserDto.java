@@ -10,11 +10,11 @@ import javax.persistence.*;
 @AllArgsConstructor
 public class UserDto {
 
-    private String userid;
+    private Long userId;
     private String loginId;
     private String password;
     private String nickname;
-    private String age;
+    private Long age;
     private String gender;
     private String profileImage;
 }
