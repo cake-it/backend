@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="x-ua-compatible" content="IE=edge"/>
+<title>Test results - ServerApplicationTests</title>
+<link href="../css/base-style.css" rel="stylesheet" type="text/css"/>
+<link href="../css/style.css" rel="stylesheet" type="text/css"/>
+<script src="../js/report.js" type="text/javascript"></script>
+</head>
+<body>
+<div id="content">
+<h1>ServerApplicationTests</h1>
+<div class="breadcrumbs">
+<a href="../index.html">all</a> &gt; 
+<a href="../packages/cakeit.server.html">cakeit.server</a> &gt; ServerApplicationTests</div>
+<div id="summary">
+<table>
+<tr>
+<td>
+<div class="summaryGroup">
+<table>
+<tr>
+<td>
+<div class="infoBox" id="tests">
+<div class="counter">1</div>
+<p>tests</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="failures">
+<div class="counter">0</div>
+<p>failures</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="ignored">
+<div class="counter">0</div>
+<p>ignored</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="duration">
+<div class="counter">0.065s</div>
+<p>duration</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</td>
+<td>
+<div class="infoBox success" id="successRate">
+<div class="percent">100%</div>
+<p>successful</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div id="tabs">
+<ul class="tabLinks">
+<li>
+<a href="#tab0">Tests</a>
+</li>
+<li>
+<a href="#tab1">Standard output</a>
+</li>
+</ul>
+<div id="tab0" class="tab">
+<h2>Tests</h2>
+<table>
+<thead>
+<tr>
+<th>Test</th>
+<th>Duration</th>
+<th>Result</th>
+</tr>
+</thead>
+<tr>
+<td class="success">contextLoads()</td>
+<td class="success">0.065s</td>
+<td class="success">passed</td>
+</tr>
+</table>
+</div>
+<div id="tab1" class="tab">
+<h2>Standard output</h2>
+<span class="code">
+<pre>23:39:59.167 [Test worker] DEBUG org.springframework.test.context.BootstrapUtils - Instantiating CacheAwareContextLoaderDelegate from class [org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate]
+23:39:59.172 [Test worker] DEBUG org.springframework.test.context.BootstrapUtils - Instantiating BootstrapContext using constructor [public org.springframework.test.context.support.DefaultBootstrapContext(java.lang.Class,org.springframework.test.context.CacheAwareContextLoaderDelegate)]
+23:39:59.184 [Test worker] DEBUG org.springframework.test.context.BootstrapUtils - Instantiating TestContextBootstrapper for test class [cakeit.server.ServerApplicationTests] from class [org.springframework.boot.test.context.SpringBootTestContextBootstrapper]
+23:39:59.189 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Neither @ContextConfiguration nor @ContextHierarchy found for test class [cakeit.server.ServerApplicationTests], using SpringBootContextLoader
+23:39:59.191 [Test worker] DEBUG org.springframework.test.context.support.AbstractContextLoader - Did not detect default resource location for test class [cakeit.server.ServerApplicationTests]: class path resource [cakeit/server/ServerApplicationTests-context.xml] does not exist
+23:39:59.191 [Test worker] DEBUG org.springframework.test.context.support.AbstractContextLoader - Did not detect default resource location for test class [cakeit.server.ServerApplicationTests]: class path resource [cakeit/server/ServerApplicationTestsContext.groovy] does not exist
+23:39:59.191 [Test worker] INFO org.springframework.test.context.support.AbstractContextLoader - Could not detect default resource locations for test class [cakeit.server.ServerApplicationTests]: no resource found for suffixes {-context.xml, Context.groovy}.
+23:39:59.191 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [cakeit.server.ServerApplicationTests]: ServerApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+23:39:59.207 [Test worker] DEBUG org.springframework.test.context.support.ActiveProfilesUtils - Could not find an 'annotation declaring class' for annotation type [org.springframework.test.context.ActiveProfiles] and class [cakeit.server.ServerApplicationTests]
+23:39:59.232 [Test worker] DEBUG org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider - Identified candidate component class: file [/Users/ihayeon/backend/server/build/classes/java/main/cakeit/server/ServerApplication.class]
+23:39:59.233 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration cakeit.server.ServerApplication for test class cakeit.server.ServerApplicationTests
+23:39:59.266 [Test worker] DEBUG org.springframework.boot.test.context.SpringBootTestContextBootstrapper - @TestExecutionListeners is not present for class [cakeit.server.ServerApplicationTests]: using defaults.
+23:39:59.267 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener, org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.event.ApplicationEventsTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener, org.springframework.test.context.event.EventPublishingTestExecutionListener]
+23:39:59.274 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@47605f2f, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@2ece4966, org.springframework.test.context.event.ApplicationEventsTestExecutionListener@1dd0e7c4, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener@7894f09b, org.springframework.boot.test.autoconfigure.SpringBootDependencyInjectionTestExecutionListener@3d484181, org.springframework.test.context.support.DirtiesContextTestExecutionListener@6111ba37, org.springframework.test.context.transaction.TransactionalTestExecutionListener@7be58f16, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener@242aa8d9, org.springframework.test.context.event.EventPublishingTestExecutionListener@5b11a194, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener@37bd68c3, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener@60f7cc1d, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener@11eadcba, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener@4721d212, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener@1b065145, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener@45cff11c]
+23:39:59.275 [Test worker] DEBUG org.springframework.test.context.support.AbstractDirtiesContextTestExecutionListener - Before test class: context [DefaultTestContext@f0e995e testClass = ServerApplicationTests, testInstance = [null], testMethod = [null], testException = [null], mergedContextConfiguration = [WebMergedContextConfiguration@4c37b5b testClass = ServerApplicationTests, locations = '{}', classes = '{class cakeit.server.ServerApplication}', contextInitializerClasses = '[]', activeProfiles = '{}', propertySourceLocations = '{}', propertySourceProperties = '{org.springframework.boot.test.context.SpringBootTestContextBootstrapper=true}', contextCustomizers = set[org.springframework.boot.test.autoconfigure.actuate.metrics.MetricsExportContextCustomizerFactory$DisableMetricExportContextCustomizer@6c4980d3, org.springframework.boot.test.autoconfigure.properties.PropertyMappingContextCustomizer@0, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverContextCustomizerFactory$Customizer@5c44c582, org.springframework.boot.test.context.filter.ExcludeFilterContextCustomizer@106cc338, org.springframework.boot.test.json.DuplicateJsonObjectContextCustomizerFactory$DuplicateJsonObjectContextCustomizer@26ceffa8, org.springframework.boot.test.mock.mockito.MockitoContextCustomizer@0, org.springframework.boot.test.web.client.TestRestTemplateContextCustomizer@ca30bc1, org.springframework.boot.test.context.SpringBootTestArgs@1, org.springframework.boot.test.context.SpringBootTestWebEnvironment@2898ac89], resourceBasePath = 'src/main/webapp', contextLoader = 'org.springframework.boot.test.context.SpringBootContextLoader', parent = [null]], attributes = map['org.springframework.test.context.web.ServletTestExecutionListener.activateListener' -&gt; true]], class annotated with @DirtiesContext [false] with mode [null].
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::               (v2.7.13)
+
+2023-07-11 23:39:59.588  INFO 20603 --- [    Test worker] cakeit.server.ServerApplicationTests     : Starting ServerApplicationTests using Java 17.0.6 on ihayeon-ui-MacBookAir.local with PID 20603 (started by ihayeon in /Users/ihayeon/backend/server)
+2023-07-11 23:39:59.588  INFO 20603 --- [    Test worker] cakeit.server.ServerApplicationTests     : No active profile set, falling back to 1 default profile: &quot;default&quot;
+2023-07-11 23:39:59.851  INFO 20603 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-07-11 23:39:59.873  INFO 20603 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 18 ms. Found 1 JPA repository interfaces.
+2023-07-11 23:40:00.087  INFO 20603 --- [    Test worker] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2023-07-11 23:40:00.115  INFO 20603 --- [    Test worker] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.6.15.Final
+2023-07-11 23:40:00.181  INFO 20603 --- [    Test worker] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2023-07-11 23:40:00.225  INFO 20603 --- [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2023-07-11 23:40:00.383  INFO 20603 --- [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2023-07-11 23:40:00.390  INFO 20603 --- [    Test worker] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+Hibernate: 
+    
+    alter table hashtags 
+       drop 
+       foreign key FK3hbu514jmn2jn31tpe9f1ds1y
+Hibernate: 
+    
+    alter table likes 
+       drop 
+       foreign key FKjs0gh1aijj8htwk2aps39r49d
+Hibernate: 
+    
+    alter table likes 
+       drop 
+       foreign key FKnvx9seeqqyy71bij291pwiwrg
+Hibernate: 
+    
+    alter table reservations 
+       drop 
+       foreign key FK2epcjb3xg87isfxtop7l47bn7
+Hibernate: 
+    
+    alter table reservations 
+       drop 
+       foreign key FKb5g9io5h54iwl2inkno50ppln
+Hibernate: 
+    
+    alter table reviews 
+       drop 
+       foreign key FKotputyv4bjkxt8i85pgalp38e
+Hibernate: 
+    
+    drop table if exists cake_stores
+Hibernate: 
+    
+    drop table if exists hashtags
+Hibernate: 
+    
+    drop table if exists likes
+Hibernate: 
+    
+    drop table if exists reservations
+Hibernate: 
+    
+    drop table if exists reviews
+Hibernate: 
+    
+    drop table if exists users
+Hibernate: 
+    
+    create table cake_stores (
+       store_id bigint not null auto_increment,
+        created_at datetime not null,
+        updated_at datetime,
+        latitude double precision,
+        longitude double precision,
+        store_image varchar(255),
+        store_introduce varchar(255),
+        store_name varchar(255),
+        store_phonenumber varchar(255),
+        store_score bigint,
+        store_time varchar(255),
+        primary key (store_id)
+    ) engine=InnoDB
+Hibernate: 
+    
+    create table hashtags (
+       hashtag_id bigint not null auto_increment,
+        created_at datetime not null,
+        updated_at datetime,
+        name varchar(255),
+        store_id bigint,
+        primary key (hashtag_id)
+    ) engine=InnoDB
+Hibernate: 
+    
+    create table likes (
+       like_id bigint not null auto_increment,
+        created_at datetime not null,
+        updated_at datetime,
+        like_yn varchar(255),
+        store_id bigint,
+        user_id bigint,
+        primary key (like_id)
+    ) engine=InnoDB
+Hibernate: 
+    
+    create table reservations (
+       reservation_id bigint not null auto_increment,
+        created_at datetime not null,
+        updated_at datetime,
+        reservation_date datetime,
+        reservation_detail varchar(255),
+        reservation_image varchar(255),
+        store_id bigint,
+        user_id bigint,
+        primary key (reservation_id)
+    ) engine=InnoDB
+Hibernate: 
+    
+    create table reviews (
+       review_id bigint not null auto_increment,
+        created_at datetime not null,
+        updated_at datetime,
+        content varchar(255),
+        store_id bigint,
+        primary key (review_id)
+    ) engine=InnoDB
+Hibernate: 
+    
+    create table users (
+       user_id bigint not null auto_increment,
+        created_at datetime not null,
+        updated_at datetime,
+        age bigint,
+        gender varchar(255),
+        login_id varchar(255),
+        nickname varchar(255),
+        password varchar(255),
+        profile_image varchar(255),
+        primary key (user_id)
+    ) engine=InnoDB
+Hibernate: 
+    
+    alter table hashtags 
+       add constraint FK3hbu514jmn2jn31tpe9f1ds1y 
+       foreign key (store_id) 
+       references cake_stores (store_id)
+Hibernate: 
+    
+    alter table likes 
+       add constraint FKjs0gh1aijj8htwk2aps39r49d 
+       foreign key (store_id) 
+       references cake_stores (store_id)
+Hibernate: 
+    
+    alter table likes 
+       add constraint FKnvx9seeqqyy71bij291pwiwrg 
+       foreign key (user_id) 
+       references users (user_id)
+Hibernate: 
+    
+    alter table reservations 
+       add constraint FK2epcjb3xg87isfxtop7l47bn7 
+       foreign key (store_id) 
+       references cake_stores (store_id)
+Hibernate: 
+    
+    alter table reservations 
+       add constraint FKb5g9io5h54iwl2inkno50ppln 
+       foreign key (user_id) 
+       references users (user_id)
+Hibernate: 
+    
+    alter table reviews 
+       add constraint FKotputyv4bjkxt8i85pgalp38e 
+       foreign key (store_id) 
+       references cake_stores (store_id)
+2023-07-11 23:40:00.847  INFO 20603 --- [    Test worker] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-07-11 23:40:00.851  INFO 20603 --- [    Test worker] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-07-11 23:40:00.937  WARN 20603 --- [    Test worker] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2023-07-11 23:40:01.278  INFO 20603 --- [    Test worker] cakeit.server.ServerApplicationTests     : Started ServerApplicationTests in 1.987 seconds (JVM running for 2.445)
+</pre>
+</span>
+</div>
+</div>
+<div id="footer">
+<p>
+<div>
+<label class="hidden" id="label-for-line-wrapping-toggle" for="line-wrapping-toggle">Wrap lines
+<input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
+</label>
+</div>Generated by 
+<a href="http://www.gradle.org">Gradle 8.1.1</a> at 2023. 7. 11. 오후 11:40:01</p>
+</div>
+</div>
+</body>
+</html>
