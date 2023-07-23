@@ -28,7 +28,7 @@ public class S3Controller {
         return "upload";
     }
 
-    @PostMapping("api/upload")
+    @PostMapping("/api/upload")
     public String uploadFile(FileDto fileDto) throws IOException {
         log.info("업로드 포스트 >>>");
 
