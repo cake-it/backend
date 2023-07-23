@@ -11,6 +11,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.Column;
@@ -29,25 +30,21 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private final UserRepository userRepository;
 
+    //회원가입 start
     @Transactional
     public void join(UserDto userDto) {
-        log.info("회원가입 서비스 시작");
 
-//        //password 암호화
-//        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-//        userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
-//        log.info("암호화 패스워드 >>>" + userDto.getPassword());
+        //password 암호화
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
 
-
-        //생년월일로 나이, 성별 변환
-        //성별 판단
+        //주민번호로 나이 변환
         String juminNo = String.valueOf(userDto.getAge());
+        String gender = userDto.getGender();
+
         log.info("juminNo >>>" + juminNo);
+        log.info("주민번호 성별 >>>" + gender);
 
-        String gender= String.valueOf(juminNo.charAt(6));
-        log.info("gender >>>" + gender);
-
-        //if 문
         if (gender.equals("1") || gender.equals("3")) {
             gender = "남";
         } else if (gender.equals("2") || gender.equals("4")) {
@@ -55,42 +52,41 @@ public class UserServiceImpl implements UserService {
         } else {
             gender = "에러";
         }
-        log.info("성별 알려줘 >>>>"+gender);
 
-        //만 나이 계산
+        //나이 계산
         Calendar cal = Calendar.getInstance();
         int year = cal.get(Calendar.YEAR);
 
-        String birthYear = juminNo.substring(0,2);
+        String birthYear = juminNo.substring(0, 2);
+
+        log.info("birthYear>>>" + birthYear);
 
         char ch = juminNo.charAt(7);
+        log.info("ch>>>" + ch);
+
         Long age;
 
-        if(ch < '3'){
-           age = Long.valueOf(year - (1900 + Integer.parseInt(birthYear)) + 1);
-        }else {
+        if (ch < '3') {
+            age = Long.valueOf(year - (1900 + Integer.parseInt(birthYear)) + 1);
+        } else {
             age = Long.valueOf(year - (2000 + Integer.parseInt(birthYear)) + 1);
         }
-        log.info("계산한 만 나이 >>>>>"+age);
-
-
 
         UserEntity userEntity = UserEntity.builder()
                 .loginId(userDto.getLoginId())
                 .password(userDto.getPassword())
                 .nickname(userDto.getNickname())
-                    .age(age)
-                //.age(userDto.getAge())
+                .age(age)
                 .profileImage(userDto.getProfileImage())//
-//                .gender(userDto.getGender())
                 .gender(gender)
                 .build();
 
         userRepository.save(userEntity);
-        //return "조인 성공";
     }
+//회원가입 end
 
 
+    //로그인 start
     @Override
     public UserDetails login(String loginId) {
         return null;
@@ -104,7 +100,7 @@ public class UserServiceImpl implements UserService {
 
         List<GrantedAuthority> authorities = new ArrayList<>();
 
-        if("admin".equals(loginId)){
+        if ("admin".equals(loginId)) {
             authorities.add(new SimpleGrantedAuthority(Role.ADMIN.getValue()));
         } else {
             authorities.add(new SimpleGrantedAuthority(Role.MEMBER.getValue()));
@@ -115,30 +111,34 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<UserEntity> findByLoginId(String loginId){
-        return userRepository.findByLoginId(loginId);
+    public Optional<UserEntity> findByLoginId(String username) {
+
+        return userRepository.findByLoginId(username);
     }
+//로그인 end
 
+    //중복id 체크 start
+    @Override
+    public String idcheck(String loginId) {
+        log.info("로그인 아이디>>" + loginId);
+        String idcheckYn = userRepository.idcheck(loginId);
+        log.info("idcheckYn>>" + idcheckYn);
 
+        return idcheckYn;
+    }
+//중복id 체크 end
 
-
-//    public boolean login(UserDto userDto) {
-//        UserDto findUser = userRepository.findByLoginId(userDto.getLoginId());
-//        log.info("로그인 서비스 >>" + userDto.getLoginId());
-//        log.info("로그인 서비스 findUser>>" + findUser);
+    @Override
+    public void deleteUser(UserDto userDto) {
 //
-//        if (findUser == null) {
-//            return false;
+//        // 비밀번호 확인
+//        String password = requestDto.getPassword();
+//        if (!passwordEncoder.matches(password, user.getPassword())) {
+//            throw new RestApiException(ErrorType.NOT_MATCHING_PASSWORD);
 //        }
-//
-//        if (!findUser.getPassword().equals(userDto.getPassword())) {
-//            return false;
-//        }
-//        return true;
-//    }
 
-//    public Long login(UserDto userDto) {
-//        UserDto userDto = userRepository.save(userDto);
-//        return userDto.getUserId();
-//}
+        userRepository.deleteAllByloginId(userDto.getLoginId());
+
+        //return ResponseEntity.ok(MessageResponseDto.of(HttpStatus.OK, "회원탈퇴 완료"));
+    }
 }
