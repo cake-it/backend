@@ -7,6 +7,6 @@ public interface ReservationService {
     /**
      * 케이크 예약 저장 메서드
      */
-    public boolean saveReservationDetail(PostReservationDetailDto detailDto);
+    public void saveReservationDetail(PostReservationDetailDto detailDto);
 
 }
