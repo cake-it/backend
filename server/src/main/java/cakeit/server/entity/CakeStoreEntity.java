@@ -1,7 +1,8 @@
 package cakeit.server.entity;
 
-import javax.persistence.*;
 import lombok.*;
+
+import javax.persistence.*;
 
 @Entity
 @Builder
@@ -16,6 +17,9 @@ public class CakeStoreEntity extends AbstractEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "STORE_ID")
 	private Long storeId;
+
+	@Column(name = "PLACE_ID")
+	private String placeId;
 
    	@Column(name = "STORE_NAME")
 	private String storeName;

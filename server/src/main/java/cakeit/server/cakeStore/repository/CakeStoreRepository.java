@@ -9,4 +9,6 @@ public interface CakeStoreRepository extends JpaRepository<CakeStoreEntity, Long
 
     CakeStoreEntity findByStoreName(String storeName);
 
+    CakeStoreEntity findByPlaceId(String placeId);
+
 }

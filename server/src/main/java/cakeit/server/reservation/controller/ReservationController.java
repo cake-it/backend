@@ -25,11 +25,12 @@ public class ReservationController {
     @PostMapping("/")
     public ResponseEntity<CommonResponse<String>> addReservation(@Valid @RequestBody PostReservationDetailDto reqDto){
 
-        if (reservationService.saveReservationDetail(reqDto)) {
+        try {
+            reservationService.saveReservationDetail(reqDto);
             return new ResponseEntity<>(CommonResponse.success("예약 성공"), HttpStatus.OK);
-        } else {
+        } catch (RuntimeException e) {
             return new ResponseEntity<>(CommonResponse.fail("예약 실패", ErrorResponse.builder()
-                    .errorCode(ErrorEnum.ALREADY_BOOKED.getCode()).build()), HttpStatus.OK);
+                    .errorCode(ErrorEnum.ALREADY_BOOKED.getCode()).build()), HttpStatus.SERVICE_UNAVAILABLE);
         }
 
     }
