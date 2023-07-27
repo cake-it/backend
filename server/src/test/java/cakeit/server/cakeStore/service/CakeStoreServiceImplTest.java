@@ -32,7 +32,7 @@ class CakeStoreServiceImplTest {
 
     @Test
     void getCakeStoreInfoFromGoogleAPI() throws JSONException, IOException {
-        String s = cakeStoreService.getNearbyCakeStoreListFromGoogleAPI(Double.valueOf("37.4992131"), Double.valueOf("127.0280048")).get(0);
+        String s = cakeStoreService.getNearbyCakeStoreListFromGoogleAPI(Double.valueOf("37.4992131"), Double.valueOf("127.0280048")).get(1);
         cakeStoreService.getCakeStoreInfoFromGoogleAPI(s);
     }
 }
