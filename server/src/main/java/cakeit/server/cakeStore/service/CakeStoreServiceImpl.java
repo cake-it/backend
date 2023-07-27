@@ -113,14 +113,15 @@ public class CakeStoreServiceImpl implements CakeStoreService {
         }
 
         String weekText = weekTextList.toString();
-        String storeTel = (String) jsonObj.get("formatted_phone_number");       // 전화번호
-        String storeName = (String) jsonObj.get("name");                        // 가게명
-        int storeRating = (Integer) jsonObj.get("rating");                      // 별점
+        String storeTel = (String) jsonObj.get("formatted_phone_number");               // 전화번호
+        String storeName = (String) jsonObj.get("name");                                // 가게명
+        String storeRatingStr = jsonObj.get("rating").toString();                       // 별점
+        Double storeRating = Double.valueOf(storeRatingStr);
 
         CakeStoreEntity cse = CakeStoreEntity.builder()
                 .storeName(storeName)
                 .storePhonenumber(storeTel)
-                .storeScore((long) storeRating)
+                .storeScore(storeRating)
                 .storeTime(weekText)
                 .latitude(latitude)
                 .longitude(longitude)

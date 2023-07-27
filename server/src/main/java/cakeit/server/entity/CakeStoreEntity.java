@@ -25,7 +25,7 @@ public class CakeStoreEntity extends AbstractEntity {
 	private String storeName;
 
    	@Column(name = "STORE_SCORE")
-	private Long storeScore;
+	private Double storeScore;
 
    	@Column(name = "STORE_TIME")
 	private String storeTime;
