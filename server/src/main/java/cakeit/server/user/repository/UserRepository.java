@@ -19,8 +19,10 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     Optional<UserEntity> findByLoginId(String username);
 
     // 네이티브 SQL로 조회
-    @Query(value = "select user_id from users where login_id = :loginId", nativeQuery = true)
+    @Query(value = "select login_id from users where login_id = :loginId", nativeQuery = true)
     String idcheck(@Param(value = "loginId") String loginId);
 
     void deleteAllByloginId(String loginId);
+
+    Optional<UserEntity> findByUserId(String UserId);
 }

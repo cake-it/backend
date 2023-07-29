@@ -30,20 +30,23 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private final UserRepository userRepository;
 
+    @Autowired
+    public NicknameService nicknameService;
+
     //회원가입 start
     @Transactional
-    public void join(UserDto userDto) {
+    public synchronized boolean join(UserDto userDto) {
 
         //password 암호화
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
 
         //주민번호로 나이 변환
-        String juminNo = String.valueOf(userDto.getAge());
-        String gender = userDto.getGender();
+        String juminNo= String.valueOf(userDto.getAge()) + '0';
+        String gender = juminNo.substring(6, 7);
 
         log.info("juminNo >>>" + juminNo);
-        log.info("주민번호 성별 >>>" + gender);
+        log.info("gender >>>" + gender);
 
         if (gender.equals("1") || gender.equals("3")) {
             gender = "남";
@@ -63,6 +66,7 @@ public class UserServiceImpl implements UserService {
 
         char ch = juminNo.charAt(7);
         log.info("ch>>>" + ch);
+//큐레이션 내부에
 
         Long age;
 
@@ -72,16 +76,23 @@ public class UserServiceImpl implements UserService {
             age = Long.valueOf(year - (2000 + Integer.parseInt(birthYear)) + 1);
         }
 
+        //닉네임 자동생성
+        String nickname = nicknameService.addRandomRickname();
+        log.info("nickname>>>>>>."+nickname);
+
         UserEntity userEntity = UserEntity.builder()
                 .loginId(userDto.getLoginId())
                 .password(userDto.getPassword())
-                .nickname(userDto.getNickname())
+                .nickname(nickname)
                 .age(age)
                 .profileImage(userDto.getProfileImage())//
                 .gender(gender)
+                .purpose(userDto.getPurpose())
                 .build();
 
         userRepository.save(userEntity);
+
+        return true;
     }
 //회원가입 end
 
