@@ -1,5 +1,7 @@
 package cakeit.server.cakeStore.controller;
 
+import cakeit.server.cakeStore.dto.CakeStoreBriefRequestDto;
+import cakeit.server.cakeStore.dto.CakeStoreBriefResponseDto;
 import cakeit.server.cakeStore.dto.GetCakeStoreListRequestDto;
 import cakeit.server.cakeStore.dto.GetCakeStoreListResponseDto;
 import cakeit.server.cakeStore.service.CakeStoreServiceImpl;
@@ -10,18 +12,16 @@ import lombok.RequiredArgsConstructor;
 import org.json.JSONException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/cake-store")
+@RequestMapping("/cake")
 public class CakeStoreController {
 
     private final CakeStoreServiceImpl cakeStoreService;
@@ -32,7 +32,7 @@ public class CakeStoreController {
     }
 
     @GetMapping("/")
-    public ResponseEntity<CommonResponse<List<GetCakeStoreListResponseDto>>> findCakeStoreList(@Valid @RequestBody GetCakeStoreListRequestDto reqDto) {
+    public ResponseEntity<CommonResponse<List<GetCakeStoreListResponseDto>>> findCakeStoreList(@Valid @ModelAttribute GetCakeStoreListRequestDto reqDto) {
 
         try {
             List<GetCakeStoreListResponseDto> getCakeStoreListResponseDtos = cakeStoreService.getCakeStoreListByLatitudeAndLongitude(reqDto);
@@ -42,6 +42,19 @@ public class CakeStoreController {
                     .errorCode(ErrorEnum.NOT_FOUND.getCode()).build()), HttpStatus.NOT_FOUND);
         } catch (IOException e) {
             return new ResponseEntity<>(CommonResponse.fail("주변에 케이크점이 없습니다.", ErrorResponse.builder()
+                    .errorCode(ErrorEnum.NOT_FOUND.getCode()).build()), HttpStatus.NOT_FOUND);
+        }
+
+    }
+
+    @GetMapping("/store")
+    public ResponseEntity<CommonResponse<CakeStoreBriefResponseDto>> findCakeStoreBriefDetail(@Valid @ModelAttribute CakeStoreBriefRequestDto reqDto) {
+
+        try {
+            CakeStoreBriefResponseDto cakeStoreBriefResponseDto = cakeStoreService.getCakeStoreBriefDetail(reqDto.getStoreId());
+            return new ResponseEntity<>(CommonResponse.success("케이크점 가게 정보입니다.", cakeStoreBriefResponseDto), HttpStatus.OK);
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity<>(CommonResponse.fail("케이크점 정보가 없습니다.", ErrorResponse.builder()
                     .errorCode(ErrorEnum.NOT_FOUND.getCode()).build()), HttpStatus.NOT_FOUND);
         }
 

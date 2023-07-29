@@ -1,5 +1,6 @@
 package cakeit.server.cakeStore.service;
 
+import cakeit.server.cakeStore.dto.CakeStoreBriefResponseDto;
 import cakeit.server.cakeStore.dto.GetCakeStoreListRequestDto;
 import cakeit.server.cakeStore.dto.GetCakeStoreListResponseDto;
 import org.json.JSONException;
@@ -24,5 +25,9 @@ public interface CakeStoreService {
      */
     public void getCakeStoreInfoFromGoogleAPI(String placeId) throws IOException, JSONException;
 
+    /**
+     * 케이크점 정보 가져오는 메서드
+     */
+    public CakeStoreBriefResponseDto getCakeStoreBriefDetail(Long storeId);
 
 }
