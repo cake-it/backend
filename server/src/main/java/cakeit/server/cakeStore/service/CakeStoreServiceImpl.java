@@ -1,5 +1,6 @@
 package cakeit.server.cakeStore.service;
 
+import cakeit.server.cakeStore.dto.CakeStoreBriefResponseDto;
 import cakeit.server.cakeStore.dto.GetCakeStoreListRequestDto;
 import cakeit.server.cakeStore.dto.GetCakeStoreListResponseDto;
 import cakeit.server.cakeStore.repository.CakeStoreRepository;
@@ -12,10 +13,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -30,17 +32,24 @@ public class CakeStoreServiceImpl implements CakeStoreService {
 
         Double longitude = getCakeStoreListRequestDto.getLongitude();
         Double latitude = getCakeStoreListRequestDto.getLatitude();
-
-        List<String> placeIdList = getNearbyCakeStoreListFromGoogleAPI(longitude, latitude);
-
+        log.info(" ================================ " + longitude);
+        List<String> placeIdList = getNearbyCakeStoreListFromGoogleAPI(latitude, longitude);
+        log.info(placeIdList.toString());
         List<GetCakeStoreListResponseDto> getCakeStoreListResponseDtos = new ArrayList<>();
 
         for (String placeId : placeIdList) {
-            CakeStoreEntity byPlaceId = cakeStoreRepository.findByPlaceId(placeId);
+            Optional<CakeStoreEntity> cseOptional = cakeStoreRepository.findByPlaceId(placeId);
+
+            if (cseOptional.isEmpty()) {
+                continue;
+            }
+
+            CakeStoreEntity cse = cseOptional.get();
+            System.out.println(cse.toString());
             GetCakeStoreListResponseDto cakeStoreListResponseDto = GetCakeStoreListResponseDto.builder()
-                    .cakeId(byPlaceId.getStoreId())
-                    .longitude(byPlaceId.getLongitude())
-                    .latitude(byPlaceId.getLatitude()).build();
+                    .cakeId(cse.getStoreId())
+                    .longitude(cse.getLongitude())
+                    .latitude(cse.getLatitude()).build();
             getCakeStoreListResponseDtos.add(cakeStoreListResponseDto);
             log.info("cakeStoreListResponseDto =============" + cakeStoreListResponseDto.toString());
         }
@@ -130,5 +139,26 @@ public class CakeStoreServiceImpl implements CakeStoreService {
         cakeStoreRepository.save(cse);
 
     }
+
+    /**
+     * 추후 수정 및 고민할 부분
+     *  1. 마커 눌렀을 때 storeId 다시 주는 게 좋나?
+     *  2. likeYn 더미데이터 추후 변경 필요!!!
+     */
+    @Override
+    public CakeStoreBriefResponseDto getCakeStoreBriefDetail(Long storeId) {
+
+        CakeStoreEntity cse = cakeStoreRepository.findById(storeId).orElseThrow(() -> new NoSuchElementException("등록되지 않은 케이크점입니다!"));
+        CakeStoreBriefResponseDto csbrDto = CakeStoreBriefResponseDto.builder()
+                .storeName(cse.getStoreName())
+                .rating(cse.getStoreScore())
+                .weekday_text(cse.getStoreTime())
+                .storeImage(cse.getStoreImage())
+                .likeYn("N")
+                .build();
+
+        return csbrDto;
+    }
+
 
 }
