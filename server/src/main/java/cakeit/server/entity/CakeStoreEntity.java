@@ -1,10 +1,11 @@
 package cakeit.server.entity;
 
-import javax.persistence.*;
 import lombok.*;
 
 import java.util.HashSet;
 import java.util.Set;
+import javax.persistence.*;
+
 
 @Entity
 @Builder
@@ -20,11 +21,14 @@ public class CakeStoreEntity extends AbstractEntity {
 	@Column(name = "STORE_ID")
 	private Long storeId;
 
+	@Column(name = "PLACE_ID")
+	private String placeId;
+
    	@Column(name = "STORE_NAME")
 	private String storeName;
 
    	@Column(name = "STORE_SCORE")
-	private Long storeScore;
+	private Double storeScore;
 
    	@Column(name = "STORE_TIME")
 	private String storeTime;

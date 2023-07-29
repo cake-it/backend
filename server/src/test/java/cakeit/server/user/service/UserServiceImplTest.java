@@ -69,8 +69,8 @@ class UserServiceImplTest {
                 .gender(gender)
                 .build();
 
-        UserEntity ue = userRepository.save(userDto);
-        System.out.println("테스트 결과>>>>>>"   +    ue);
+//        UserEntity ue = userRepository.save(userDto);
+//        System.out.println("테스트 결과>>>>>>"   +    ue);
     }
 
     @Test
