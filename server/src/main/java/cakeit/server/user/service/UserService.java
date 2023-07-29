@@ -11,7 +11,7 @@ import java.util.Optional;
 public interface UserService {
 //    String join(UserDto userDto);
 
-    void join(UserDto userDto);
+    public boolean join(UserDto userDto);
 
     UserDetails login(String loginId);
 

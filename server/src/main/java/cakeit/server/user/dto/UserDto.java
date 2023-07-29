@@ -19,6 +19,7 @@ public class UserDto {
     private Long age;
     private String profileImage;
     private String gender;
+    private String purpose;
 
     //User 객체로 변환
     public UserEntity toEntity() {
@@ -30,12 +31,13 @@ public class UserDto {
                 .age(age)
                 .profileImage(profileImage)
                 .gender(gender)
+                .purpose(purpose)
                 .build();
     }
 
     @Builder
     public UserDto(Long userId, String loginId, String password, String nickname, Long age, String profileImage,
-                   String gender) {
+                   String gender, String purpose) {
         this.userId = userId;
         this.loginId = loginId;
         this.password = password;
@@ -43,5 +45,6 @@ public class UserDto {
         this.age = age;
         this.profileImage = profileImage;
         this.gender = gender;
+        this.purpose = purpose;
     }
 }

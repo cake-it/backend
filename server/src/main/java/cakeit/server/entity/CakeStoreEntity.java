@@ -3,6 +3,9 @@ package cakeit.server.entity;
 import javax.persistence.*;
 import lombok.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Builder
 @Getter
@@ -41,5 +44,11 @@ public class CakeStoreEntity extends AbstractEntity {
    	@Column(name = "STORE_IMAGE")
 	private String storeImage;
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	private UserEntity userEntity;
+	//private int viewCount;
+
+	@OneToMany(mappedBy = "storeEntity", cascade = CascadeType.ALL)
+	Set<LikeEntity> likes = new HashSet<>();
 
 }
