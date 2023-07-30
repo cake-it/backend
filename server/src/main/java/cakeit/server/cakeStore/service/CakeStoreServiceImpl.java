@@ -1,8 +1,6 @@
 package cakeit.server.cakeStore.service;
 
-import cakeit.server.cakeStore.dto.CakeStoreBriefResponseDto;
-import cakeit.server.cakeStore.dto.GetCakeStoreListRequestDto;
-import cakeit.server.cakeStore.dto.GetCakeStoreListResponseDto;
+import cakeit.server.cakeStore.dto.*;
 import cakeit.server.cakeStore.repository.CakeStoreRepository;
 import cakeit.server.entity.CakeStoreEntity;
 import com.squareup.okhttp.*;
@@ -144,9 +142,13 @@ public class CakeStoreServiceImpl implements CakeStoreService {
      * 추후 수정 및 고민할 부분
      *  1. 마커 눌렀을 때 storeId 다시 주는 게 좋나?
      *  2. likeYn 더미데이터 추후 변경 필요!!!
+     *  3. likeYn 가져올 수 있는 서비스 확인하고 가져오기
      */
     @Override
-    public CakeStoreBriefResponseDto getCakeStoreBriefDetail(Long storeId) {
+    public CakeStoreBriefResponseDto getCakeStoreBriefDetail(CakeStoreBriefRequestDto requestDto) {
+
+        Long storeId = requestDto.getStoreId();
+        Long userId = requestDto.getUserId();
 
         CakeStoreEntity cse = cakeStoreRepository.findById(storeId).orElseThrow(() -> new NoSuchElementException("등록되지 않은 케이크점입니다!"));
         CakeStoreBriefResponseDto csbrDto = CakeStoreBriefResponseDto.builder()
@@ -158,6 +160,36 @@ public class CakeStoreServiceImpl implements CakeStoreService {
                 .build();
 
         return csbrDto;
+    }
+
+
+    /**
+     * 추후 수정 및 고민할 부분
+     *  1. 마커 눌렀을 때 storeId 다시 주는 게 좋나?
+     *  2. likeYn, categories, review 더미데이터 추후 변경 필요!!!
+     *  3. likeYn 가져올 수 있는 서비스 확인하고 가져오기
+     */
+    @Override
+    public CakeStoreDetailResponseDto getCakeStoreInfoDetail(CakeStoreDetailRequestDto requestDto) {
+
+        Long storeId = requestDto.getStoreId();
+        Long userId = requestDto.getUserId();
+
+        CakeStoreEntity cse = cakeStoreRepository.findById(storeId).orElseThrow(() -> new NoSuchElementException("등록되지 않은 케이크점입니다!"));
+
+        CakeStoreDetailResponseDto csdrDto = CakeStoreDetailResponseDto.builder()
+                .storeName(cse.getStoreName())
+                .rating(cse.getStoreScore())
+                .weekday_text(cse.getStoreTime())
+                .storeImage(cse.getStoreImage())
+                .storeIntro(cse.getStoreIntroduce())
+                .telNum(cse.getStorePhonenumber())
+                .likeYn("N")
+                .categories(null)
+                .review(null)
+                .build();
+
+        return csdrDto;
     }
 
 

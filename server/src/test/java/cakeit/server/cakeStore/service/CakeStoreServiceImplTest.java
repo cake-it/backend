@@ -40,7 +40,7 @@ class CakeStoreServiceImplTest {
     @Test
     void getCakeStoreBriefDetail() {
 
-        CakeStoreBriefResponseDto cakeStoreBriefDetail = cakeStoreService.getCakeStoreBriefDetail(4L);
+//        CakeStoreBriefResponseDto cakeStoreBriefDetail = cakeStoreService.getCakeStoreBriefDetail(4L);
 //        System.out.println(cakeStoreBriefDetail.getStoreName());
 //        System.out.println(cakeStoreBriefDetail.getWeekday_text());
     }
