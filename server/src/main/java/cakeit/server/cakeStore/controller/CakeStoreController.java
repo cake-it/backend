@@ -1,9 +1,6 @@
 package cakeit.server.cakeStore.controller;
 
-import cakeit.server.cakeStore.dto.CakeStoreBriefRequestDto;
-import cakeit.server.cakeStore.dto.CakeStoreBriefResponseDto;
-import cakeit.server.cakeStore.dto.GetCakeStoreListRequestDto;
-import cakeit.server.cakeStore.dto.GetCakeStoreListResponseDto;
+import cakeit.server.cakeStore.dto.*;
 import cakeit.server.cakeStore.service.CakeStoreServiceImpl;
 import cakeit.server.global.CommonResponse;
 import cakeit.server.global.exception.ErrorEnum;
@@ -51,8 +48,21 @@ public class CakeStoreController {
     public ResponseEntity<CommonResponse<CakeStoreBriefResponseDto>> findCakeStoreBriefDetail(@Valid @ModelAttribute CakeStoreBriefRequestDto reqDto) {
 
         try {
-            CakeStoreBriefResponseDto cakeStoreBriefResponseDto = cakeStoreService.getCakeStoreBriefDetail(reqDto.getStoreId());
+            CakeStoreBriefResponseDto cakeStoreBriefResponseDto = cakeStoreService.getCakeStoreBriefDetail(reqDto);
             return new ResponseEntity<>(CommonResponse.success("케이크점 가게 정보입니다.", cakeStoreBriefResponseDto), HttpStatus.OK);
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity<>(CommonResponse.fail("케이크점 정보가 없습니다.", ErrorResponse.builder()
+                    .errorCode(ErrorEnum.NOT_FOUND.getCode()).build()), HttpStatus.NOT_FOUND);
+        }
+
+    }
+
+    @GetMapping("/detail")
+    public ResponseEntity<CommonResponse<CakeStoreDetailResponseDto>> findCakeStoreInfoDetail(@Valid @ModelAttribute CakeStoreDetailRequestDto reqDto) {
+
+        try {
+            CakeStoreDetailResponseDto cakeStoreDetailResponseDto = cakeStoreService.getCakeStoreInfoDetail(reqDto);
+            return new ResponseEntity<>(CommonResponse.success("케이크점 가게 상세 정보입니다.", cakeStoreDetailResponseDto), HttpStatus.OK);
         } catch (NoSuchElementException e) {
             return new ResponseEntity<>(CommonResponse.fail("케이크점 정보가 없습니다.", ErrorResponse.builder()
                     .errorCode(ErrorEnum.NOT_FOUND.getCode()).build()), HttpStatus.NOT_FOUND);

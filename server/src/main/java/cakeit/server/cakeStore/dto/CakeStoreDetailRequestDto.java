@@ -7,7 +7,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CakeStoreBriefRequestDto {
+public class CakeStoreDetailRequestDto {
 
     private Long storeId;
     private Long userId;
