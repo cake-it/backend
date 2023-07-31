@@ -12,5 +12,4 @@ public class CakeStoreController {
     public String test() {
         return "hello";
     }
-
 }

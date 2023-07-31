@@ -1,14 +1,14 @@
 package cakeit.server.entity;
 
-import javax.persistence.*;
 import lombok.*;
+
+import javax.persistence.*;
 
 @Entity
 @Builder
 @Getter
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 @Table (name = "USERS")
 public class UserEntity extends AbstractEntity {
 
@@ -35,5 +35,16 @@ public class UserEntity extends AbstractEntity {
    	@Column(name = "PROFILE_IMAGE")
 	private String profileImage;
 
-
+	@Builder
+	public UserEntity(Long userId, String loginId, String password, String nickname, Long age, String profileImage,
+					  String gender) {
+		this.userId = userId;
+		this.loginId = loginId;
+		this.password = password;
+		this.nickname = nickname;
+		this.age = age;
+		this.profileImage = profileImage;
+		this.gender = gender;
+	}
 }
+

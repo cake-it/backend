@@ -1,9 +1,9 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/cakeitdb?serverTimezone=UT&characterEncoding=UTF-8
-    username: cakeit
-    password: 1q2w3e4r!
+    url: jdbc:mysql://127.0.0.1:3306/cake?serverTimezone=UT&characterEncoding=UTF-8
+    username: root
+    password: 92276981
   jpa:
     hibernate:
       ddl-auto: create
@@ -13,3 +13,4 @@ spring:
       hibernate:
         format_sql: true
         dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+        show_sql: true

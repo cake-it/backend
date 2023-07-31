@@ -1,7 +1,8 @@
 package cakeit.server.entity;
 
-import javax.persistence.*;
 import lombok.*;
+
+import javax.persistence.*;
 
 @Entity
 @Builder
