@@ -3,19 +3,33 @@ package cakeit.server.cakeStore.service;
 import cakeit.server.cakeStore.dto.*;
 import cakeit.server.cakeStore.repository.CakeStoreRepository;
 import cakeit.server.entity.CakeStoreEntity;
+import cakeit.server.file.service.S3Service;
+import com.amazonaws.util.IOUtils;
 import com.squareup.okhttp.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 @Slf4j
 @Service
@@ -23,7 +37,10 @@ import java.util.Optional;
 public class CakeStoreServiceImpl implements CakeStoreService {
 
     private final CakeStoreRepository cakeStoreRepository;
+    private final S3Service s3Service;
+
     private static final String YOUR_API_KEY = "-";
+    private static final String targetPath = "-";   // 임시 저장소
 
     @Override
     public List<GetCakeStoreListResponseDto> getCakeStoreListByLatitudeAndLongitude(GetCakeStoreListRequestDto getCakeStoreListRequestDto) throws IOException, JSONException {
@@ -108,8 +125,15 @@ public class CakeStoreServiceImpl implements CakeStoreService {
         JSONObject cakeStoreJson = new JSONObject(cakeStoreString);
 
         JSONObject jsonObj = cakeStoreJson.getJSONObject("result");
-
+        log.info(jsonObj.toString());
         String storeAddress = (String) jsonObj.get("formatted_address");        // 주소
+        String uploadUrl = null;                                                // 가게 이미지
+        if (jsonObj.has("photos")){
+            JSONArray photos = (JSONArray) jsonObj.get("photos");// photo reference 가져오기
+            String photo_reference = (String) ((JSONObject) photos.get(0)).get("photo_reference");
+            uploadUrl = getCakeStoreImageFromGoogleAPI(photo_reference);
+        }
+
         Double latitude = (Double) ((JSONObject)((JSONObject) jsonObj.get("geometry")).get("location")).get("lat");         // 위도
         Double longitude = (Double) ((JSONObject)((JSONObject) jsonObj.get("geometry")).get("location")).get("lng");        // 경도
 
@@ -132,9 +156,52 @@ public class CakeStoreServiceImpl implements CakeStoreService {
                 .storeTime(weekText)
                 .latitude(latitude)
                 .longitude(longitude)
+                .storeImage(uploadUrl)
                 .placeId(placeId).build();
 
         cakeStoreRepository.save(cse);
+
+    }
+
+    @Override
+    public String getCakeStoreImageFromGoogleAPI(String photoReference) throws IOException {
+
+        int maxWidth = 400;
+        OkHttpClient client = new OkHttpClient();
+        MediaType mediaType = MediaType.parse("text/plain");
+        RequestBody body = RequestBody.create(mediaType, "");
+        Request request = new Request.Builder()
+                .url("https://maps.googleapis.com/maps/api/place/photo?" + "maxwidth=" + maxWidth + "&photo_reference=" + photoReference + "&key=" + YOUR_API_KEY)
+                .build();
+
+
+        Response response = client.newCall(request).execute();
+        String responseString = response.toString();
+        String[] spliter = responseString.split("url=");
+        String imageUrl = spliter[1].substring(0, spliter[1].length() - 1);
+
+//        String targetPath = "-"; // 임시 저장소
+
+        try (InputStream in = new URL(imageUrl).openStream()) {
+
+            Files.copy(in, Paths.get(targetPath), StandardCopyOption.REPLACE_EXISTING);
+            File file = new File(targetPath);
+            FileItem fileItem = new DiskFileItem("mainFile", Files.probeContentType(file.toPath()), false, file.getName(), (int) file.length(), file.getParentFile());
+            IOUtils.copy(new FileInputStream(file), fileItem.getOutputStream());
+            MultipartFile multipartFile = new CommonsMultipartFile(fileItem);
+            log.info("File Name: " + multipartFile.getOriginalFilename());
+            log.info("File Size: " + multipartFile.getSize());
+            log.info("File Content Type: " + multipartFile.getContentType());
+            String uploadUrl = s3Service.uploadFileWithUUID(multipartFile);
+            log.info(uploadUrl);
+
+            return uploadUrl;
+
+        } catch (IOException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+
+        return null;
 
     }
 

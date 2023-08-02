@@ -33,4 +33,9 @@ public interface CakeStoreService {
      */
     public CakeStoreDetailResponseDto getCakeStoreInfoDetail(CakeStoreDetailRequestDto requestDto);
 
+    /**
+     * 구글 API 사용해서 케이크점 사진 가져와서 S3에 올리 메서드
+     */
+    public String getCakeStoreImageFromGoogleAPI(String photoReference) throws IOException;
+
 }
