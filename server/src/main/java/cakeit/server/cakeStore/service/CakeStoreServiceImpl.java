@@ -47,7 +47,7 @@ public class CakeStoreServiceImpl implements CakeStoreService {
 
         Double longitude = getCakeStoreListRequestDto.getLongitude();
         Double latitude = getCakeStoreListRequestDto.getLatitude();
-        log.info(" ================================ " + longitude);
+
         List<String> placeIdList = getNearbyCakeStoreListFromGoogleAPI(latitude, longitude);
         log.info(placeIdList.toString());
         List<GetCakeStoreListResponseDto> getCakeStoreListResponseDtos = new ArrayList<>();
@@ -128,8 +128,9 @@ public class CakeStoreServiceImpl implements CakeStoreService {
         log.info(jsonObj.toString());
         String storeAddress = (String) jsonObj.get("formatted_address");        // 주소
         String uploadUrl = null;                                                // 가게 이미지
+
         if (jsonObj.has("photos")){
-            JSONArray photos = (JSONArray) jsonObj.get("photos");// photo reference 가져오기
+            JSONArray photos = (JSONArray) jsonObj.get("photos");               // photo reference 가져오기
             String photo_reference = (String) ((JSONObject) photos.get(0)).get("photo_reference");
             uploadUrl = getCakeStoreImageFromGoogleAPI(photo_reference);
         }
@@ -147,6 +148,7 @@ public class CakeStoreServiceImpl implements CakeStoreService {
         String storeTel = (String) jsonObj.get("formatted_phone_number");               // 전화번호
         String storeName = (String) jsonObj.get("name");                                // 가게명
         String storeRatingStr = jsonObj.get("rating").toString();                       // 별점
+        String storeIntroduce = storeName + "입니다.";
         Double storeRating = Double.valueOf(storeRatingStr);
 
         CakeStoreEntity cse = CakeStoreEntity.builder()
@@ -157,6 +159,7 @@ public class CakeStoreServiceImpl implements CakeStoreService {
                 .latitude(latitude)
                 .longitude(longitude)
                 .storeImage(uploadUrl)
+                .storeIntroduce(storeIntroduce)
                 .placeId(placeId).build();
 
         cakeStoreRepository.save(cse);
@@ -174,11 +177,11 @@ public class CakeStoreServiceImpl implements CakeStoreService {
                 .url("https://maps.googleapis.com/maps/api/place/photo?" + "maxwidth=" + maxWidth + "&photo_reference=" + photoReference + "&key=" + YOUR_API_KEY)
                 .build();
 
-
         Response response = client.newCall(request).execute();
         String responseString = response.toString();
         String[] spliter = responseString.split("url=");
         String imageUrl = spliter[1].substring(0, spliter[1].length() - 1);
+        log.info("imageUrl =============== " + imageUrl);
 
 //        String targetPath = "-"; // 임시 저장소
 
@@ -189,11 +192,7 @@ public class CakeStoreServiceImpl implements CakeStoreService {
             FileItem fileItem = new DiskFileItem("mainFile", Files.probeContentType(file.toPath()), false, file.getName(), (int) file.length(), file.getParentFile());
             IOUtils.copy(new FileInputStream(file), fileItem.getOutputStream());
             MultipartFile multipartFile = new CommonsMultipartFile(fileItem);
-            log.info("File Name: " + multipartFile.getOriginalFilename());
-            log.info("File Size: " + multipartFile.getSize());
-            log.info("File Content Type: " + multipartFile.getContentType());
             String uploadUrl = s3Service.uploadFileWithUUID(multipartFile);
-            log.info(uploadUrl);
 
             return uploadUrl;
 
