@@ -13,6 +13,7 @@ import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -39,8 +40,12 @@ public class CakeStoreServiceImpl implements CakeStoreService {
     private final CakeStoreRepository cakeStoreRepository;
     private final S3Service s3Service;
 
-    private static final String YOUR_API_KEY = "-";
-    private static final String targetPath = "-";   // 임시 저장소
+    @Value("${your-api-key}")
+    private String YOUR_API_KEY;
+
+    @Value("${target-path}")
+    private String targetPath;
+
 
     @Override
     public List<GetCakeStoreListResponseDto> getCakeStoreListByLatitudeAndLongitude(GetCakeStoreListRequestDto getCakeStoreListRequestDto) throws IOException, JSONException {
