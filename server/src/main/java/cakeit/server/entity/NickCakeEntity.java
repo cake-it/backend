@@ -18,5 +18,6 @@ public class NickCakeEntity {
     @Column(name = "NICK_CAKE_ID")
     private Long nickCakeId;
 
+    @Column(name = "WORD")
     private String word;
 }
