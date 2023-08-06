@@ -3,11 +3,15 @@ package cakeit.server.entity;
 import javax.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static javax.persistence.FetchType.LAZY;
+
 @Entity
-@Builder
 @Getter
-@ToString
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Setter
+@NoArgsConstructor
 @AllArgsConstructor
 @Table (name = "LIKES")
 public class LikeEntity extends AbstractEntity {
@@ -17,20 +21,14 @@ public class LikeEntity extends AbstractEntity {
 	@Column(name = "LIKE_ID")
 	private Long likeId;
 
-	/** FK setting */
-	@ManyToOne(fetch = FetchType.LAZY)
-	// @OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(referencedColumnName = "STORE_ID", name = "STORE_ID")
-	private CakeStoreEntity storeId;
+	@ManyToOne(fetch = LAZY)
+	private UserEntity userEntity;
 
-   	/** FK setting */
-	 @ManyToOne(fetch = FetchType.LAZY)
-	// @OneToOne(fetch = FetchType.LAZY)
-	 @JoinColumn(referencedColumnName = "USER_ID", name = "USER_ID")
-	private UserEntity userId;
+	@ManyToOne(fetch = LAZY)
+	private CakeStoreEntity storeEntity;
 
-   	@Column(name = "LIKE_YN")
-	private String likeYn;
-
-
+	 public LikeEntity(CakeStoreEntity storeEntity, UserEntity userEntity){
+         this.storeEntity = storeEntity;
+         this.userEntity = userEntity;
+     }
 }

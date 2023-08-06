@@ -1,7 +1,12 @@
 package cakeit.server.entity;
 
 import javax.persistence.*;
+
+import cakeit.server.user.service.Role;
 import lombok.*;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Builder
@@ -20,20 +25,35 @@ public class UserEntity extends AbstractEntity {
 	@Column(name = "LOGIN_ID")
 	private String loginId;
 
-   	@Column(name = "PASSWORD")
+	@Column(name = "PASSWORD")
 	private String password;
 
-   	@Column(name = "NICKNAME")
+	@Column(name = "NICKNAME")
 	private String nickname;
 
-   	@Column(name = "AGE")
+	@Column(name = "AGE")
 	private Long age;
 
-   	@Column(name = "GENDER")
+	@Column(name = "GENDER")
 	private String gender;
 
-   	@Column(name = "PROFILE_IMAGE")
+	@Column(name = "PROFILE_IMAGE")
 	private String profileImage;
 
+	@Column(name = "PURPOSE")
+	private String purpose;
+
+	@Column(name = "IS_DELETED")
+	private boolean isDeleted;
+
+	@Column(name = "DELETED_AT")
+	private LocalDateTime deletedAt;
+
+	@Builder
+	public UserEntity(String loginId, String password, String nickname) {
+		this.loginId = loginId;
+		this.password = password;
+		this.nickname = nickname;
+	}
 
 }

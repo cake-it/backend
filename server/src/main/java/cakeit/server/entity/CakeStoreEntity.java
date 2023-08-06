@@ -1,7 +1,9 @@
 package cakeit.server.entity;
 
-import javax.persistence.*;
 import lombok.*;
+
+import javax.persistence.*;
+
 
 @Entity
 @Builder
@@ -17,11 +19,14 @@ public class CakeStoreEntity extends AbstractEntity {
 	@Column(name = "STORE_ID")
 	private Long storeId;
 
+	@Column(name = "PLACE_ID")
+	private String placeId;
+
    	@Column(name = "STORE_NAME")
 	private String storeName;
 
    	@Column(name = "STORE_SCORE")
-	private Long storeScore;
+	private Double storeScore;
 
    	@Column(name = "STORE_TIME")
 	private String storeTime;
@@ -41,5 +46,11 @@ public class CakeStoreEntity extends AbstractEntity {
    	@Column(name = "STORE_IMAGE")
 	private String storeImage;
 
+//	@ManyToOne(fetch = FetchType.LAZY)
+//	private UserEntity userEntity;
+	//private int viewCount;
+
+//	@OneToMany(mappedBy = "storeEntity", cascade = CascadeType.ALL)
+//	Set<LikeEntity> likes = new HashSet<>();
 
 }
