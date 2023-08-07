@@ -18,5 +18,6 @@ public class NickAdjectiveEntity {
     @Column(name = "NICK_ADJ_ID")
     private Long nickAdjId;
 
+    @Column(name = "WORD")
     private String word;
 }

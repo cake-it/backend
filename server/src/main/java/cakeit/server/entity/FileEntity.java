@@ -1,28 +1,26 @@
 package cakeit.server.entity;
 
 import lombok.*;
-import org.springframework.data.annotation.Id;
 
 import javax.persistence.*;
 
 @Entity
 @Builder
 @Getter
-@ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@Table(name = "FILE")
+@Table(name = "UPLOAD_FILES")
 public class FileEntity extends AbstractEntity {
 
-    @javax.persistence.Id
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "FILE_ID")
     private Long fileId;
 
-    //@Column(name = "TITLE")
+    @Column(name = "TITLE")
     private String title;
 
-    //@Column(name = "S3_URL")
+    @Column(name = "S3_URL")
     private String s3Url;
 
     public FileEntity(String title, String s3Url) {

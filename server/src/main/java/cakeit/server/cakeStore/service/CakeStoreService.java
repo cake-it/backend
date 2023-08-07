@@ -1,8 +1,6 @@
 package cakeit.server.cakeStore.service;
 
-import cakeit.server.cakeStore.dto.CakeStoreBriefResponseDto;
-import cakeit.server.cakeStore.dto.GetCakeStoreListRequestDto;
-import cakeit.server.cakeStore.dto.GetCakeStoreListResponseDto;
+import cakeit.server.cakeStore.dto.*;
 import org.json.JSONException;
 
 import java.io.IOException;
@@ -28,6 +26,16 @@ public interface CakeStoreService {
     /**
      * 케이크점 정보 가져오는 메서드
      */
-    public CakeStoreBriefResponseDto getCakeStoreBriefDetail(Long storeId);
+    public CakeStoreBriefResponseDto getCakeStoreBriefDetail(CakeStoreBriefRequestDto requestDto);
+
+    /**
+     * 케이크점 상세 정보 가져오는 메서드
+     */
+    public CakeStoreDetailResponseDto getCakeStoreInfoDetail(CakeStoreDetailRequestDto requestDto);
+
+    /**
+     * 구글 API 사용해서 케이크점 사진 가져와서 S3에 올리 메서드
+     */
+    public String getCakeStoreImageFromGoogleAPI(String photoReference) throws IOException;
 
 }
