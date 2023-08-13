@@ -3,7 +3,11 @@ package cakeit.server.cakeStore.service;
 import cakeit.server.cakeStore.dto.*;
 import cakeit.server.cakeStore.repository.CakeStoreRepository;
 import cakeit.server.entity.CakeStoreEntity;
+import cakeit.server.entity.LikeEntity;
+import cakeit.server.entity.UserEntity;
 import cakeit.server.file.service.S3Service;
+import cakeit.server.likes.repository.LikesRepository;
+import cakeit.server.user.repository.UserRepository;
 import com.amazonaws.util.IOUtils;
 import com.squareup.okhttp.*;
 import lombok.RequiredArgsConstructor;
@@ -38,6 +42,8 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 public class CakeStoreServiceImpl implements CakeStoreService {
 
     private final CakeStoreRepository cakeStoreRepository;
+    private final UserRepository userRepository;
+    private final LikesRepository likesRepository;
     private final S3Service s3Service;
 
     @Value("${your-api-key}")
@@ -209,12 +215,6 @@ public class CakeStoreServiceImpl implements CakeStoreService {
 
     }
 
-    /**
-     * 추후 수정 및 고민할 부분
-     *  1. 마커 눌렀을 때 storeId 다시 주는 게 좋나?
-     *  2. likeYn 더미데이터 추후 변경 필요!!!
-     *  3. likeYn 가져올 수 있는 서비스 확인하고 가져오기
-     */
     @Override
     public CakeStoreBriefResponseDto getCakeStoreBriefDetail(CakeStoreBriefRequestDto requestDto) {
 
@@ -222,12 +222,21 @@ public class CakeStoreServiceImpl implements CakeStoreService {
         Long userId = requestDto.getUserId();
 
         CakeStoreEntity cse = cakeStoreRepository.findById(storeId).orElseThrow(() -> new NoSuchElementException("등록되지 않은 케이크점입니다!"));
+        UserEntity ue = userRepository.findById(userId).orElseThrow(() -> new NoSuchElementException("등록되지 않은 유저입니다!"));
+
+        String likeYn = "N";
+
+        Optional<LikeEntity> le = likesRepository.findByUserEntityAndStoreEntity(ue, cse);
+        if (le.isPresent()) {
+            likeYn = "Y";
+        }
+
         CakeStoreBriefResponseDto csbrDto = CakeStoreBriefResponseDto.builder()
                 .storeName(cse.getStoreName())
                 .rating(cse.getStoreScore())
                 .weekday_text(cse.getStoreTime())
                 .storeImage(cse.getStoreImage())
-                .likeYn("N")
+                .likeYn(likeYn)
                 .build();
 
         return csbrDto;
@@ -236,9 +245,7 @@ public class CakeStoreServiceImpl implements CakeStoreService {
 
     /**
      * 추후 수정 및 고민할 부분
-     *  1. 마커 눌렀을 때 storeId 다시 주는 게 좋나?
-     *  2. likeYn, categories, review 더미데이터 추후 변경 필요!!!
-     *  3. likeYn 가져올 수 있는 서비스 확인하고 가져오기
+     *  categories, review 더미데이터 추후 변경 필요!!!
      */
     @Override
     public CakeStoreDetailResponseDto getCakeStoreInfoDetail(CakeStoreDetailRequestDto requestDto) {
@@ -247,6 +254,14 @@ public class CakeStoreServiceImpl implements CakeStoreService {
         Long userId = requestDto.getUserId();
 
         CakeStoreEntity cse = cakeStoreRepository.findById(storeId).orElseThrow(() -> new NoSuchElementException("등록되지 않은 케이크점입니다!"));
+        UserEntity ue = userRepository.findById(userId).orElseThrow(() -> new NoSuchElementException("등록되지 않은 유저입니다!"));
+
+        String likeYn = "N";
+
+        Optional<LikeEntity> le = likesRepository.findByUserEntityAndStoreEntity(ue, cse);
+        if (le.isPresent()) {
+            likeYn = "Y";
+        }
 
         CakeStoreDetailResponseDto csdrDto = CakeStoreDetailResponseDto.builder()
                 .storeName(cse.getStoreName())
@@ -255,7 +270,7 @@ public class CakeStoreServiceImpl implements CakeStoreService {
                 .storeImage(cse.getStoreImage())
                 .storeIntro(cse.getStoreIntroduce())
                 .telNum(cse.getStorePhonenumber())
-                .likeYn("N")
+                .likeYn(likeYn)
                 .categories(null)
                 .review(null)
                 .build();

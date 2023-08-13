@@ -22,9 +22,11 @@ public class LikeEntity extends AbstractEntity {
 	private Long likeId;
 
 	@ManyToOne(fetch = LAZY)
+	@JoinColumn(name = "USER_ID")
 	private UserEntity userEntity;
 
 	@ManyToOne(fetch = LAZY)
+	@JoinColumn(name = "STORE_ID")
 	private CakeStoreEntity storeEntity;
 
 	 public LikeEntity(CakeStoreEntity storeEntity, UserEntity userEntity){
