@@ -1,7 +1,5 @@
 package cakeit.server;
 
-import cakeit.server.auth.JwtAuthenticationFilter;
-import cakeit.server.auth.JwtTokenProvider;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,24 +10,20 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-@Configuration
-@EnableWebSecurity
-@AllArgsConstructor
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
-
-    private final JwtTokenProvider jwtTokenProvider;
+//@Configuration
+//@EnableWebSecurity
+//@AllArgsConstructor
+public class SecurityConfigV0 extends WebSecurityConfigurerAdapter {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 
     @Override
     public void configure(WebSecurity web) throws Exception {
@@ -43,15 +37,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .cors().configurationSource(corsConfigurationSource())
                 .and()
                     .csrf().disable()
-                .httpBasic().disable()
-                .authorizeRequests()
-                .antMatchers("/**").permitAll()     // 테스트용으로 전체 api 접속 허용
-//                .antMatchers("/user/signUp","/user/login").permitAll()
-//                .anyRequest().authenticated()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
-                        UsernamePasswordAuthenticationFilter.class);
-        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                    .authorizeRequests()
+                        .antMatchers("/**").permitAll()
+                .and()
+                .formLogin()     // 로그인 설정
+//                .loginPage("/member/login")      // 커스텀 login 페이지를 사용
+                .defaultSuccessUrl("/")      // 로그인 성공 시 이동할 페이지
+                .permitAll()
+                .and()
+                .logout()
+                .logoutRequestMatcher(new AntPathRequestMatcher("/member/logout"))
+                .logoutSuccessUrl("/")
+                .invalidateHttpSession(true)    // 세션 초기화
+                .and()
+                .exceptionHandling();
     }
 
     @Bean

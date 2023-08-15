@@ -19,6 +19,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -53,6 +54,7 @@ public class CakeStoreServiceImpl implements CakeStoreService {
     private String targetPath;
 
 
+    @Transactional
     @Override
     public List<GetCakeStoreListResponseDto> getCakeStoreListByLatitudeAndLongitude(GetCakeStoreListRequestDto getCakeStoreListRequestDto) throws IOException, JSONException {
 
@@ -71,6 +73,7 @@ public class CakeStoreServiceImpl implements CakeStoreService {
             }
 
             CakeStoreEntity cse = cseOptional.get();
+            log.info("cse values =========== " + cse.toString());
             System.out.println(cse.toString());
             GetCakeStoreListResponseDto cakeStoreListResponseDto = GetCakeStoreListResponseDto.builder()
                     .cakeId(cse.getStoreId())
@@ -83,6 +86,7 @@ public class CakeStoreServiceImpl implements CakeStoreService {
         return getCakeStoreListResponseDtos;
     }
 
+    @Transactional
     @Override
     public List<String> getNearbyCakeStoreListFromGoogleAPI(Double latitude, Double longitude) throws IOException, JSONException {
 
@@ -114,6 +118,7 @@ public class CakeStoreServiceImpl implements CakeStoreService {
         return placeIdList;
     }
 
+    @Transactional
     @Override
     public void getCakeStoreInfoFromGoogleAPI(String placeId) throws IOException, JSONException {
 
@@ -177,6 +182,7 @@ public class CakeStoreServiceImpl implements CakeStoreService {
 
     }
 
+    @Transactional
     @Override
     public String getCakeStoreImageFromGoogleAPI(String photoReference) throws IOException {
 
@@ -215,6 +221,7 @@ public class CakeStoreServiceImpl implements CakeStoreService {
 
     }
 
+    @Transactional
     @Override
     public CakeStoreBriefResponseDto getCakeStoreBriefDetail(CakeStoreBriefRequestDto requestDto) {
 
@@ -247,6 +254,7 @@ public class CakeStoreServiceImpl implements CakeStoreService {
      * 추후 수정 및 고민할 부분
      *  categories, review 더미데이터 추후 변경 필요!!!
      */
+    @Transactional
     @Override
     public CakeStoreDetailResponseDto getCakeStoreInfoDetail(CakeStoreDetailRequestDto requestDto) {
 

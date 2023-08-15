@@ -1,24 +1,18 @@
 package cakeit.server.user.service;
 
-import cakeit.server.entity.CakeStoreEntity;
-import cakeit.server.entity.UserEntity;
-import cakeit.server.reservation.dto.PostReservationDetailDto;
 import cakeit.server.user.dto.UserDto;
 import cakeit.server.user.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.time.LocalDateTime;
 import java.util.Calendar;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @SpringBootTest
-class UserServiceImplTest {
+class UserServiceImplV0Test {
 
     @Autowired
-    private UserServiceImpl userService;
+    private UserServiceImplV0 userService;
     @Autowired
     private UserRepository userRepository;
 
