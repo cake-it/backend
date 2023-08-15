@@ -6,6 +6,7 @@ import cakeit.server.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Slf4j
@@ -18,8 +19,9 @@ public class NicknameServiceImpl implements NicknameService {
     private final UserRepository userRepository;
 
 
+    @Transactional
     @Override
-    public String addRandomRickname() {
+    public String addRandomNickname() {
 
         Long nickCakeTotalNum = nickCakeRepository.findTotalNickCakeEntityNumber();
         Long nickAdjTotalNum = nickAdjectiveRepository.findTotalNickAdjectiveEntityNumber();
@@ -37,6 +39,7 @@ public class NicknameServiceImpl implements NicknameService {
         return nickname;
     }
 
+    @Transactional
     @Override
     public boolean isDuplicatedNickname(String nickname) {
 

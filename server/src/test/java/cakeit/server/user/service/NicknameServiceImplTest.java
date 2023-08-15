@@ -13,9 +13,9 @@ class NicknameServiceImplTest {
     private NicknameServiceImpl nicknameService;
 
     @Test
-    void addRandomRickname() {
+    void addRandomNickname() {
 
-        String nickname = nicknameService.addRandomRickname();
+        String nickname = nicknameService.addRandomNickname();
         System.out.println(nickname);
         boolean isduplicated = nicknameService.isDuplicatedNickname(nickname);
         System.out.println(isduplicated);
