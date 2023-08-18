@@ -1,8 +1,6 @@
 package cakeit.server.cakeStore.service;
 
-import cakeit.server.cakeStore.dto.CakeStoreBriefResponseDto;
-import cakeit.server.cakeStore.dto.GetCakeStoreListRequestDto;
-import cakeit.server.cakeStore.dto.GetCakeStoreListResponseDto;
+import cakeit.server.cakeStore.dto.*;
 import org.json.JSONException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +33,7 @@ class CakeStoreServiceImplTest {
     void getCakeStoreInfoFromGoogleAPI() throws JSONException, IOException {
         String s = cakeStoreService.getNearbyCakeStoreListFromGoogleAPI(Double.valueOf("37.4992131"), Double.valueOf("127.0280048")).get(1);
         cakeStoreService.getCakeStoreInfoFromGoogleAPI(s);
+
     }
 
     @Test
@@ -43,6 +42,20 @@ class CakeStoreServiceImplTest {
 //        CakeStoreBriefResponseDto cakeStoreBriefDetail = cakeStoreService.getCakeStoreBriefDetail(4L);
 //        System.out.println(cakeStoreBriefDetail.getStoreName());
 //        System.out.println(cakeStoreBriefDetail.getWeekday_text());
+    }
+
+    @Test
+    void getCakeStoreInfoDetail() {
+        CakeStoreDetailRequestDto csdr = CakeStoreDetailRequestDto.builder()
+                .storeId(7L)
+                .userId(2L).build();
+        CakeStoreDetailResponseDto cakeStoreInfoDetail = cakeStoreService.getCakeStoreInfoDetail(csdr);
+        System.out.println("cakeStoreInfoDetail.toString() =========== " + cakeStoreInfoDetail.toString());
+        System.out.println("cakeStoreInfoDetail.toString() =========== " + cakeStoreInfoDetail.getLikeYn());
+        System.out.println("cakeStoreInfoDetail.toString() =========== " + cakeStoreInfoDetail.getStoreName());
+
+
+
     }
 
     @Test
