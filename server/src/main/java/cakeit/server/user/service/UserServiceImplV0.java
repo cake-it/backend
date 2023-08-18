@@ -1,16 +1,11 @@
 package cakeit.server.user.service;
 
-import cakeit.server.auth.JwtTokenProvider;
-import cakeit.server.entity.TokenEntity;
 import cakeit.server.entity.UserEntity;
-import cakeit.server.user.dto.LoginRequestDto;
-import cakeit.server.user.dto.LoginResponseDto;
-import cakeit.server.user.dto.SignUpRequestDto;
 import cakeit.server.user.dto.UserDto;
-import cakeit.server.user.repository.TokenRepository;
 import cakeit.server.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -20,25 +15,31 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Optional;
 
-@Slf4j
-@Service
+@Log4j2
+//@Service
 @RequiredArgsConstructor
-public class UserServiceImpl implements UserService {
+public class UserServiceImplV0{
 
     private final UserRepository userRepository;
-    private final TokenRepository tokenRepository;
-    private final JwtTokenProvider jwtTokenProvider;
-    private final NicknameServiceImpl nicknameService;
+    public final NicknameService nicknameService;
 
-    @Transactional
-    @Override
-    public boolean signUp(SignUpRequestDto signUpDto) {
+    public boolean join(UserDto userDto) {
+
+        //password 암호화
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
 
         //주민번호로 나이 변환
-        String juminNo = String.valueOf(signUpDto.getAge());
-        String gender = juminNo.substring(6);
+        String juminNo = String.valueOf(userDto.getAge()) + '0';
+        String gender = juminNo.substring(6, 7);
+
+        log.info("juminNo >>>" + juminNo);
+        log.info("gender >>>" + gender);
 
         if (gender.equals("1") || gender.equals("3")) {
             gender = "남";
@@ -54,8 +55,12 @@ public class UserServiceImpl implements UserService {
 
         String birthYear = juminNo.substring(0, 2);
 
-        char ch = juminNo.charAt(6);
-        Long age = 0L;
+        log.info("birthYear>>>" + birthYear);
+
+        char ch = juminNo.charAt(7);
+        log.info("ch>>>" + ch);
+
+        Long age;
 
         if (ch < '3') {
             age = Long.valueOf(year - (1900 + Integer.parseInt(birthYear)) + 1);
@@ -66,15 +71,14 @@ public class UserServiceImpl implements UserService {
         //닉네임 자동생성
         String nickname = nicknameService.addRandomNickname();
 
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         UserEntity userEntity = UserEntity.builder()
-                .loginId(signUpDto.getLoginId())
-                .password(passwordEncoder.encode(signUpDto.getPassword()))
+                .loginId(userDto.getLoginId())
+                .password(userDto.getPassword())
                 .nickname(nickname)
                 .age(age)
-                .profileImage(signUpDto.getProfileImage())
+                .profileImage(userDto.getProfileImage())//
                 .gender(gender)
-                .purpose(signUpDto.getPurpose())
+                .purpose(userDto.getPurpose())
                 .build();
 
         userRepository.save(userEntity);
@@ -83,30 +87,11 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    @Override
-    public LoginResponseDto login(LoginRequestDto reqDto) {
-        UserEntity user = userRepository.findByLoginId(reqDto.getLoginId()).orElseThrow(() -> new NoSuchElementException("등록되지 않은 유저입니다!"));
-
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        if (!passwordEncoder.matches(reqDto.getPassword(), user.getPassword())) {
-            throw new NoSuchElementException("등록되지 않은 유저입니다!");
-        }
-
-        TokenEntity token = jwtTokenProvider.createToken(user.getLoginId());
-        tokenRepository.save(token);
-
-        return LoginResponseDto.builder()
-                .userId(user.getUserId())
-                .loginId(user.getLoginId())
-                .nickname(user.getNickname())
-                .profileImage(user.getProfileImage())
-                .gender(user.getGender())
-                .accessToken(token.getAccessToken())
-                .refreshToken(token.getRefreshToken())
-                .build();
+    //로그인 start
+    public UserDetails login(String loginId) {
+        return null;
     }
 
-    @Override
     public UserDetails loadUserByLoginId(String loginId) throws UsernameNotFoundException {
         // 로그인을 하기 위해 가입된 user정보를 조회하는 메서드
         Optional<UserEntity> memberWrapper = userRepository.findByLoginId(loginId);
@@ -124,7 +109,6 @@ public class UserServiceImpl implements UserService {
         return new User(userEntity.getLoginId(), userEntity.getPassword(), authorities);
     }
 
-    @Override
     public Optional<UserEntity> findByLoginId(String username) {
 
         return userRepository.findByLoginId(username);
@@ -132,7 +116,6 @@ public class UserServiceImpl implements UserService {
 
 
     //중복id 체크 start
-    @Override
     public String idcheck(String loginId) {
         log.info("로그인 아이디>>" + loginId);
         String idcheckYn = userRepository.idcheck(loginId);
@@ -141,9 +124,9 @@ public class UserServiceImpl implements UserService {
         return idcheckYn;
     }
 
-    @Override
     public void deleteUser(UserDto userDto) {
-        userRepository.deleteAllByloginId(userDto.getLoginId());
-    }
 
+        userRepository.deleteAllByloginId(userDto.getLoginId());
+
+    }
 }
